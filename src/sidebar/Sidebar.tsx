@@ -65,6 +65,12 @@ const Sidebar = () => {
                 label="All Products"
                 address="allProducts"
               />
+              <MenuItems
+                icon={Activity}
+                label="All Orders"
+                address="allorders"
+              />
+              <MenuItems icon={Activity} label="All users" address="allusers" />
             </nav>
           </div>
         </div>

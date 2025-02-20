@@ -6,6 +6,8 @@ import AllProducts from "@/pages/AllProducts";
 import Checkoutpage from "@/pages/Checkoutpage";
 import AddProduct from "@/pages/dashboard/AddProduct";
 import AdminAllProduct from "@/pages/dashboard/AdminAllProduct";
+import Allorder from "@/pages/dashboard/Allorder";
+import Alluser from "@/pages/dashboard/AllUser";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import UpdateProductForm from "@/pages/dashboard/UpdateProductForm";
 import { LoginForm } from "@/pages/Login";
@@ -42,6 +44,14 @@ export const router = createBrowserRouter([
       {
         path: "allProducts",
         element: <AdminAllProduct />,
+      },
+      {
+        path: "allorders",
+        element: <Allorder />,
+      },
+      {
+        path: "allusers",
+        element: <Alluser />,
       },
     ],
   },

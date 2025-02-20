@@ -93,7 +93,7 @@ const CheckoutPage: React.FC = () => {
           name: "Customer Name",
           email: "customer@example.com",
         },
-        paymentStatus: paymentIntent?.status,
+        paymentStatus: "pending",
         paymentId: paymentIntent.id,
       };
 

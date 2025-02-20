@@ -25,14 +25,11 @@ export function LoginForm({
       try {
         const userdata = Object.fromEntries(formData.entries());
         const res = await login(userdata);
-
         const user = verifyToken(res.data.data.token);
-
         dispatch(setUser({ user: user, token: res.data.data.token }));
         toast.success("Logged in successfully");
       } catch (error) {
-        toast.error("some thing went wrong");
-        console.error(error);
+        toast.error(error.message);
       }
     },
     null
