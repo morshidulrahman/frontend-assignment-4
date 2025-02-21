@@ -1,4 +1,5 @@
 import App from "@/App";
+import About from "@/components/about/About";
 import SingleProduct from "@/components/product/SingleProduct";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Layout from "@/layout/Layout";
@@ -10,8 +11,9 @@ import Allorder from "@/pages/dashboard/Allorder";
 import Alluser from "@/pages/dashboard/AllUser";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import UpdateProductForm from "@/pages/dashboard/UpdateProductForm";
-import { LoginForm } from "@/pages/Login";
-import { SignUp } from "@/pages/SignUp";
+import Login from "@/pages/Login";
+
+import Register from "@/pages/SignUp";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -21,6 +23,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <App /> },
       { path: "/allProducts", element: <AllProducts /> },
+      { path: "/about", element: <About /> },
       { path: "/products/:id", element: <SingleProduct /> },
       { path: "/checkout/:id", element: <Checkoutpage /> },
     ],
@@ -57,10 +60,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginForm />,
+    element: <Login />,
   },
   {
     path: "/signup",
-    element: <SignUp />,
+    element: <Register />,
   },
 ]);

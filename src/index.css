@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -64,6 +66,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  font-family: "Urbanist", serif;
+}
 .banner_image {
   background-image: linear-gradient(
       to bottom,
@@ -96,4 +102,13 @@
 }
 .swiper-pagination-bullet-active {
   background-color: #e82f0e !important;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

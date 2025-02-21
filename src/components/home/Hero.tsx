@@ -1,72 +1,62 @@
-// Import Swiper styles
-import "swiper/css";
-import { Autoplay, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Check } from "lucide-react";
+import { Fade } from "react-awesome-reveal";
 
 const Hero = () => {
   return (
-    <div className=" ">
-      <Swiper
-        pagination={true}
-        modules={[Pagination, Autoplay]}
-        className="mySwiper"
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-      >
-        <SwiperSlide>
-          <div className="w-full h-[400px] lg:h-[90vh]   banner_image3 ">
-            <div className="z-50 lg:p-60 md:p-10 p-12  flex flex-col items-center justify-center">
-              <h2 className="capitalize text-3xl  lg:text-6xl font-bold text-white lg:w-[80%] mx-auto text-center w-[90%] md:w-[90%]">
-                Looking for a vehicle? You’re in the perfect spot.
-              </h2>
-              <p className=" text-white py-5 md:py-6  w-[90%] mx-auto text-center lg:w-[80%] md:w-[70%]">
-                Over 39,000 people work for us in more than 70 countries all
-                over the This breadth of global coverage, combined with
-                specialist services
+    <div
+      className="bg-cover bg-center relative h-screen"
+      style={{
+        backgroundImage:
+          "url('https://carento-nextjs.vercel.app/_next/static/media/banner.c6982b24.png')",
+      }}
+    >
+      <div className="bg-black/70 absolute inset-0 ">
+        <div className="container mx-auto px-6  relative h-full">
+          <div className="w-[70%] absolute top-[30%]">
+            <Fade
+              cascade={true}
+              triggerOnce={false}
+              damping={1e-1}
+              direction="up"
+              delay={200}
+              duration={1500}
+            >
+              <p className="text-sm text-[#70f46d] mb-4">
+                Find Your Perfect Car
               </p>
-              <button className="bg-[#ff5a3c] text-white px-4 py-2 rounded-md hover:bg-transparent hover:text-[#ff5a3c] duration-300 transition-all border border-[#ff5a3c] capitalize mt-2">
-                View All
-              </button>
-            </div>
+              <h1 className="text-5xl font-extrabold text-white mb-8 leading-[55px]">
+                Looking for a vehicle? <br />
+                You're in the perfect spot.
+              </h1>
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2">
+                  <button className="bg-[#70f46d] flex items-center justify-center rounded-full p-1">
+                    <Check className="w-4 h-4 " />
+                  </button>{" "}
+                  <p className="text-white text-sm">
+                    High quality at a low cost.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button className="bg-[#70f46d] flex items-center justify-center rounded-full p-1">
+                    <Check className="w-4 h-4 " />
+                  </button>{" "}
+                  <p className="text-white text-sm">Premium services.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button className="bg-[#70f46d] flex items-center justify-center rounded-full p-1">
+                    <Check className="w-4 h-4 " />
+                  </button>{" "}
+                  <p className="text-white text-sm">
+                    {" "}
+                    with 24/7 roadside support.
+                  </p>
+                </div>
+              </div>
+            </Fade>
           </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="w-full h-[400px] lg:h-[100vh] banner_image2">
-            <div className="z-50 lg:p-60 md:p-10 p-12  flex flex-col items-center justify-center">
-              <h2 className="capitalize text-3xl  lg:text-6xl font-bold text-white lg:w-[80%] mx-auto text-center w-[90%] md:w-[80%]">
-                Looking for a vehicle? You’re in the perfect spot.
-              </h2>
-              <p className=" text-white py-5 md:py-6  w-[90%] mx-auto text-center lg:w-[60%] md:w-[70%]">
-                Over 39,000 people work for us in more than 70 countries all
-                over the This breadth of global coverage, combined with
-                specialist services
-              </p>
-              <button className="bg-[#ff5a3c] text-white px-4 py-2 rounded-md hover:bg-transparent hover:text-[#ff5a3c] duration-300 transition-all border border-[#ff5a3c] capitalize mt-2">
-                View All
-              </button>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="w-full h-[400px] lg:h-[100vh]   banner_image ">
-            <div className="z-50 lg:p-60 md:p-10 p-12  flex flex-col items-center justify-center">
-              <h2 className="capitalize text-3xl  lg:text-6xl font-bold text-white lg:w-[80%] mx-auto text-center w-[90%] md:w-[70%]">
-                Looking for a vehicle? You’re in the perfect spot.
-              </h2>
-              <p className=" text-white py-5 md:py-6  w-[90%] mx-auto text-center lg:w-[80%] md:w-[70%]">
-                Over 39,000 people work for us in more than 70 countries all
-                over the This breadth of global coverage, combined with
-                specialist services
-              </p>
-              <button className="bg-[#ff5a3c] text-white px-4 py-2 rounded-md hover:bg-transparent hover:text-[#ff5a3c] duration-300 transition-all border border-[#ff5a3c] capitalize mt-2">
-                View All
-              </button>
-            </div>
-          </div>
-        </SwiperSlide>
-      </Swiper>
+        </div>
+      </div>
     </div>
   );
 };

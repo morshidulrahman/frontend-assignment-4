@@ -1,11 +1,10 @@
-import Footer from "@/components/partials/Footer";
-import Navbar from "@/components/partials/Navbar";
+import Footer from "@/pages/Footer";
 import { Outlet } from "react-router-dom";
-
+import NavbarComponent from "@/components/home/HeroandNav";
 const Layout = () => {
   return (
     <>
-      <Navbar />
+      <NavbarComponent />
       <Outlet />
       <Footer />
     </>
