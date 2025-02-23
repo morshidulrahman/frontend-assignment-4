@@ -1,179 +1,292 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import React, { useState } from "react";
-
 import { Link } from "react-router-dom";
-
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+import {
+  Armchair,
+  CarTaxiFront,
+  CircleGauge,
+  Fuel,
+  Star,
+  VenusAndMars,
+} from "lucide-react";
 const AllProductsPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedModel, setSelectedModel] = useState("");
-  const [selectedAvailability, setSelectedAvailability] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 100000]);
+  const [filters, setFilters] = useState({
+    searchTerm: "",
+    category: "",
+    brand: "",
+    model: "",
+    availability: "",
+    priceRange: [0, 1000000],
+  });
 
   const {
     data: productsResponse,
     isLoading,
     isError,
   } = useGetAllProductsQuery("");
-
   const products = productsResponse?.data || [];
 
-  // Filtering logic
+  const minPrice = Math.min(...products.map((p) => p.price), 0);
+  const maxPrice = Math.max(...products.map((p) => p.price), 50000);
+
+  const getUniqueValues = (value: keyof (typeof products)[0]) => [
+    ...new Set(products.map((p: any) => p[value])),
+  ];
+
   const filteredProducts = products.filter((product) => {
-    const matchesSearchTerm =
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesCategory =
-      selectedCategory === "" || product.category === selectedCategory;
-
-    const matchesBrand =
-      selectedBrand === "" || product.brand === selectedBrand;
-
-    const matchesModel =
-      selectedModel === "" || product.model === selectedModel;
-
-    const matchesAvailability =
-      selectedAvailability === "" ||
-      (selectedAvailability === "available" && product.available) ||
-      (selectedAvailability === "unavailable" && !product.available);
-
-    const matchesPrice =
-      product.price >= priceRange[0] && product.price <= priceRange[1];
+    const { searchTerm, category, brand, model, availability, priceRange } =
+      filters;
 
     return (
-      matchesSearchTerm &&
-      matchesCategory &&
-      matchesBrand &&
-      matchesModel &&
-      matchesAvailability &&
-      matchesPrice
+      (searchTerm === "" ||
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (category === "" || product.category === category) &&
+      (brand === "" || product.brand === brand) &&
+      (model === "" || product.model === model) &&
+      (availability === "" ||
+        (availability === "available" && product.available) ||
+        (availability === "unavailable" && !product.available)) &&
+      product.price >= priceRange[0] &&
+      product.price <= priceRange[1]
     );
   });
 
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1>Loading.........</h1>
+        <h1>Loading...</h1>
       </div>
     );
-
   if (isError)
     return (
       <div className="text-center text-red-500">Error fetching products</div>
     );
 
-  // Get unique filter options from products
-  const uniqueCategories = [
-    ...new Set(products.map((product) => product.category)),
-  ];
-  const uniqueBrands = [...new Set(products.map((product) => product.brand))];
-  const uniqueModels = [...new Set(products.map((product) => product.model))];
+  const resetFilters = () => {
+    setFilters({
+      searchTerm: "",
+      category: "",
+      brand: "",
+      model: "",
+      availability: "",
+      priceRange: [minPrice, maxPrice],
+    });
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center mb-8">All Products</h1>
+      <div
+        className="relative h-80 bg-cover rounded-xl  hidden lg:flex"
+        style={{
+          backgroundImage:
+            "url('https://carento-nextjs.vercel.app/assets/imgs/page-header/banner.png')",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/20 rounded-xl pt-10 pl-10 text-center">
+          <h1 className="text-4xl text-white font-bold">All Products</h1>
+          <p className="text-white mt-2">
+            Get the latest news, updates, and tips
+          </p>
+        </div>
 
-      {/* Search and Filters */}
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="absolute -bottom-10 left-16 bg-gray-50 w-[90%] rounded-lg p-10 border">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <input
+              type="text"
+              placeholder="Search by name, brand, or category"
+              value={filters.searchTerm}
+              onChange={(e) =>
+                setFilters({ ...filters, searchTerm: e.target.value })
+              }
+              className="border rounded-lg px-4 py-2 w-full"
+            />
+
+            {["category", "brand", "model"].map((key) => (
+              <select
+                key={key}
+                value={filters[key]}
+                onChange={(e) =>
+                  setFilters({ ...filters, [key]: e.target.value })
+                }
+                className="border rounded-lg px-4 py-2 w-full"
+              >
+                <option value="">
+                  All {key.charAt(0).toUpperCase() + key.slice(1)}s
+                </option>
+                {getUniqueValues(key as keyof (typeof products)[0]).map(
+                  (value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  )
+                )}
+              </select>
+            ))}
+
+            <select
+              value={filters.availability}
+              onChange={(e) =>
+                setFilters({ ...filters, availability: e.target.value })
+              }
+              className="border rounded-lg px-4 py-2 w-full"
+            >
+              <option value="">All Availability</option>
+              <option value="available">In Stock</option>
+              <option value="unavailable">Out of Stock</option>
+            </select>
+
+            <div>
+              <p className="font-semibold text-gray-700">
+                Price: ${filters.priceRange[0]} - ${filters.priceRange[1]}
+              </p>
+              <Slider
+                range
+                min={minPrice}
+                max={maxPrice}
+                value={filters.priceRange}
+                onChange={(value) =>
+                  setFilters({ ...filters, priceRange: value as number[] })
+                }
+                trackStyle={[{ backgroundColor: "#4CAF50" }]}
+                handleStyle={[
+                  { borderColor: "#4CAF50" },
+                  { borderColor: "#4CAF50" },
+                ]}
+                railStyle={{ backgroundColor: "#ccc" }}
+              />
+            </div>
+            <button
+              onClick={resetFilters}
+              className="border rounded-lg px-4 py-2 bg-green-500 text-white hover:bg-green-600 transition"
+            >
+              Reset Filters
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* mobile */}
+      <div className="grid grid-cols-1 lg:hidden visible gap-4 border p-4 rounded-lg">
         <input
           type="text"
           placeholder="Search by name, brand, or category"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-jext"
+          value={filters.searchTerm}
+          onChange={(e) =>
+            setFilters({ ...filters, searchTerm: e.target.value })
+          }
+          className="border rounded-lg px-4 py-2 w-full"
         />
 
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-jext"
-        >
-          <option value="">All Categories</option>
-          {uniqueCategories.map((category) => (
-            <option key={category} value={category}>
-              {category}
+        {["category", "brand", "model"].map((key) => (
+          <select
+            key={key}
+            value={filters[key]}
+            onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}
+            className="border rounded-lg px-4 py-2 w-full"
+          >
+            <option value="">
+              All {key.charAt(0).toUpperCase() + key.slice(1)}s
             </option>
-          ))}
-        </select>
+            {getUniqueValues(key as keyof (typeof products)[0]).map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+        ))}
 
         <select
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-jext"
-        >
-          <option value="">All Brands</option>
-          {uniqueBrands.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={selectedModel}
-          onChange={(e) => setSelectedModel(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-jext"
-        >
-          <option value="">All Models</option>
-          {uniqueModels.map((model) => (
-            <option key={model} value={model}>
-              {model}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={selectedAvailability}
-          onChange={(e) => setSelectedAvailability(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-jext"
+          value={filters.availability}
+          onChange={(e) =>
+            setFilters({ ...filters, availability: e.target.value })
+          }
+          className="border rounded-lg px-4 py-2 w-full"
         >
           <option value="">All Availability</option>
           <option value="available">In Stock</option>
           <option value="unavailable">Out of Stock</option>
         </select>
+
+        <div>
+          <p className="font-semibold text-gray-700">
+            Price: $ {filters.priceRange[0]} - ${filters.priceRange[1]}
+          </p>
+          <Slider
+            className="pl-1"
+            range
+            min={minPrice}
+            max={maxPrice}
+            value={filters.priceRange}
+            onChange={(value) =>
+              setFilters({ ...filters, priceRange: value as number[] })
+            }
+            trackStyle={[{ backgroundColor: "#4CAF50" }]}
+            handleStyle={[
+              { borderColor: "#4CAF50" },
+              { borderColor: "#4CAF50" },
+            ]}
+            railStyle={{ backgroundColor: "#ccc" }}
+          />
+        </div>
+        <button
+          onClick={resetFilters}
+          className="border rounded-lg px-4 py-2 bg-green-500 text-white hover:bg-green-600 transition"
+        >
+          Reset Filters
+        </button>
       </div>
 
-      {/* Product Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Product List */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-20">
         {filteredProducts.map((product) => (
           <div
+            className="bg-white rounded-xl shadow-lg overflow-hidden border group"
             key={product._id}
-            className="border border-gray-100 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
           >
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-[200px] object-cover rounded-t-2xl"
+              className="w-full h-52 object-cover group-hover:scale-105 duration-300 transition-all"
             />
-
-            <div className="p-4">
-              <h3 className="text-2xl capitalize font-bold">{product.brand}</h3>
-              <p className="text-gray-600 text-lg">{product.name}</p>
-
+            <div className="p-4 relative">
+              <div className="flex items-center justify-between absolute right-2 -top-4 text-sm  ">
+                <span className="border bg-gray-100 rounded-lg px-3 py-1 flex items-center gap-1 hover:border-green-500 ">
+                  <Star className="w-4 h-4 text-green-400 fill-green-400" />{" "}
+                  {product.rating} ({product.reviews} reviews)
+                </span>
+              </div>
+              <h3 className="text-lg font-semibold mt-2 mb-1">
+                {product.name}
+              </h3>
+              <p className="text-gray-500 text-sm flex items-center gap-2">
+                <VenusAndMars className="w-4 h-4" /> {product.location}
+              </p>
+              <hr className="my-3" />
+              <div className="flex justify-between text-sm text-gray-600">
+                <span className="text-gray-500 text-sm flex items-center gap-2">
+                  <productTaxiFront className="w-4 h-4" /> {product.miles}
+                </span>
+                <span className="text-gray-500 text-sm flex items-center gap-2">
+                  <CircleGauge className="w-4 h-4" /> {product.transmission}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm text-gray-600 mt-2">
+                <span className="text-gray-500 text-sm flex items-center gap-2">
+                  <Fuel className="w-4 h-4" /> {product.fuel}
+                </span>
+                <span className="text-gray-500 text-sm flex items-center gap-2">
+                  <Armchair className="w-4 h-4" /> {product.seats}
+                </span>
+              </div>
               <div className="flex justify-between items-center mt-4">
-                <p className="text-gray-500">Model: {product.model}</p>
-                <p className="text-xl font-bold text-primary-jext">
-                  ${product.price.toLocaleString()}
-                </p>
-              </div>
-
-              <div className="flex justify-between items-center mt-2">
-                <p className="text-gray-500 capitalize">{product.category}</p>
-                <p
-                  className={`text-sm font-semibold ${
-                    product.available ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {product.available ? "In Stock" : "Out of Stock"}
-                </p>
-              </div>
-
-              <div className="mt-6">
+                <span className="text-lg font-bold">{product.price}</span>
                 <Link to={`/products/${product._id}`}>
-                  <button className="w-full bg-primary-jext text-white py-2 px-4 rounded-lg hover:bg-primary-hover transition-colors duration-300">
+                  <button className="border bg-gray-100 rounded-xl px-3 py-2 hover:bg-green-500 hover:text-white duration-300 transition-all">
                     View Details
                   </button>
                 </Link>

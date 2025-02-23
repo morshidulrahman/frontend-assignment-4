@@ -89,7 +89,7 @@ const blogPosts = [
 
 const BlogCarousel = () => {
   return (
-    <div className="w-full py-10">
+    <div className="w-full py-20">
       <div>
         <h1 className="text-3xl font-bold mb-2">Upcoming Cars & Events</h1>
         <p className="text-gray-400 mb-10">
@@ -100,12 +100,11 @@ const BlogCarousel = () => {
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20}
         slidesPerView={3}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        navigation
-        pagination={{ clickable: true }}
+        // autoplay={{
+        //   delay: 2500,
+        //   disableOnInteraction: false,
+        // }}
+
         breakpoints={{
           320: { slidesPerView: 1 },
           768: { slidesPerView: 2 },

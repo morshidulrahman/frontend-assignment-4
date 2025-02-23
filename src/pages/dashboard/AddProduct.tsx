@@ -4,7 +4,7 @@ import { useAddProductMutation } from "@/redux/features/product/productApi";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-const AddProductForm: React.FC = () => {
+const AddProductForm = () => {
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
@@ -15,6 +15,12 @@ const AddProductForm: React.FC = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
   const [available, setAvailable] = useState(true);
+  const [location, setLocation] = useState("");
+  const [miles, setMiles] = useState(0);
+  const [transmission, setTransmission] = useState("");
+  const [fuel, setFuel] = useState("");
+  const [seats, setSeats] = useState(0);
+  const [reviews, setReviews] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const [addProduct] = useAddProductMutation();
@@ -50,12 +56,18 @@ const AddProductForm: React.FC = () => {
         brand,
         model,
         description,
-        image: imageUrl,
+        image: image ? URL.createObjectURL(image) : "",
         rating,
         quantity,
         category,
         price,
         available,
+        location,
+        miles,
+        transmission,
+        fuel,
+        seats,
+        reviews,
       };
 
       await addProduct(newProduct).unwrap();
@@ -71,6 +83,12 @@ const AddProductForm: React.FC = () => {
       setCategory("");
       setPrice(0);
       setAvailable(true);
+      setLocation("");
+      setMiles(0);
+      setTransmission("");
+      setFuel("");
+      setSeats(0);
+      setReviews(0);
     } catch (error) {
       alert("Failed to add product.");
     } finally {
@@ -82,10 +100,12 @@ const AddProductForm: React.FC = () => {
     <div className="flex h-screen items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg"
+        className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg"
       >
-        <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
-        <div className="grid grid-cols-2 gap-2 mb-2">
+        <h2 className="text-2xl font-bold mb-6 text-center">Add New Product</h2>
+
+        {/* 3-column Grid Layout */}
+        <div className="grid grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Name
@@ -98,7 +118,6 @@ const AddProductForm: React.FC = () => {
               required
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Brand
@@ -111,9 +130,6 @@ const AddProductForm: React.FC = () => {
               required
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Model
@@ -126,6 +142,9 @@ const AddProductForm: React.FC = () => {
               required
             />
           </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Rating
@@ -140,9 +159,6 @@ const AddProductForm: React.FC = () => {
               required
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Quantity
@@ -170,7 +186,7 @@ const AddProductForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-2">
+        <div className="grid grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Price
@@ -198,9 +214,88 @@ const AddProductForm: React.FC = () => {
               <option value="false">Out of Stock</option>
             </select>
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Location
+            </label>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-2">
+        <div className="grid grid-cols-3 gap-2 mb-2">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Miles
+            </label>
+            <input
+              type="number"
+              value={miles}
+              onChange={(e) => setMiles(Number(e.target.value))}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Transmission
+            </label>
+            <input
+              type="text"
+              value={transmission}
+              onChange={(e) => setTransmission(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Fuel Type
+            </label>
+            <input
+              type="text"
+              value={fuel}
+              onChange={(e) => setFuel(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 mb-2">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Seats
+            </label>
+            <input
+              type="number"
+              value={seats}
+              onChange={(e) => setSeats(Number(e.target.value))}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Reviews
+            </label>
+            <input
+              type="number"
+              value={reviews}
+              onChange={(e) => setReviews(Number(e.target.value))}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Image & Description in grid-cols-1 */}
+        <div className="grid grid-cols-1 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Image
@@ -216,21 +311,24 @@ const AddProductForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="mb-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            required
-          />
+        <div className="grid grid-cols-1 gap-2 mb-2">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
         </div>
+
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+          className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
         >
           {isLoading ? "Adding..." : "Add Product"}
         </button>

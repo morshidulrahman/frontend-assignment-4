@@ -4,7 +4,7 @@ import {
   useGetAllProductsQuery,
 } from "@/redux/features/product/productApi";
 import { FilePenLine, Trash2 } from "lucide-react";
-import React from "react";
+
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -57,6 +57,9 @@ const AdminAllProduct = () => {
               Category
             </th>
             <th scope="col" className="px-6 py-3">
+              Quantity
+            </th>
+            <th scope="col" className="px-6 py-3">
               Price
             </th>
             <th scope="col" className="px-6 py-3">
@@ -78,6 +81,7 @@ const AdminAllProduct = () => {
               </th>
               <td className="px-6 py-4">{data.brand}</td>
               <td className="px-6 py-4">{data.category}</td>
+              <td className="px-6 py-4">{data.quantity}</td>
               <td className="px-6 py-4">{data.price}</td>
               <td className="px-6 py-4 flex gap-2">
                 <Link to={`/dashboard/update-product/${data._id}`}>

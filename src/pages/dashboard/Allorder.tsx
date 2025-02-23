@@ -54,7 +54,7 @@ const Allorder = () => {
       });
       refetch();
       toast.success(`Order marked as ${newStatus}!`);
-      setOpenDropdown(null); // Close dropdown after update
+      setOpenDropdown(null);
     } catch (err) {
       toast.error("Failed to update order status");
     }

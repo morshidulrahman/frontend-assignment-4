@@ -2,10 +2,19 @@ import UseUser from "@/hook/UseUser";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 const NavbarComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const user = UseUser();
 
@@ -28,6 +37,11 @@ const NavbarComponent = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handlelogout = () => {
+    dispatch(logout());
+    toast.success("logout successfully");
+  };
+
   return (
     <>
       <nav
@@ -36,7 +50,9 @@ const NavbarComponent = () => {
         }  shadow-md z-50`}
       >
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="font-bold text-xl text-white">Autotrader</div>
+          <Link to="/" className="font-bold text-xl text-white">
+            Autotrader
+          </Link>
           <div className="hidden md:flex space-x-6">
             <Link to="/" className="text-white hover:text-white">
               Home
@@ -47,13 +63,31 @@ const NavbarComponent = () => {
           </div>
           <div className="flex items-center space-x-4">
             {user ? (
-              <Avatar>
-                <AvatarImage
-                  className="w-10 h-10"
-                  src="https://github.com/shadcn.png"
-                />
-                <AvatarFallback>{user?.email}</AvatarFallback>
-              </Avatar>
+              <Popover>
+                <PopoverTrigger>
+                  <Avatar>
+                    <AvatarImage
+                      className="w-10 h-10"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>{user?.email}</AvatarFallback>
+                  </Avatar>
+                </PopoverTrigger>
+                <PopoverContent className="flex flex-col  w-36 p-0 text-center text-sm font-semibold">
+                  <Link
+                    to="/Dashboard"
+                    className="border-b border-b-gray-100 duration-300 hover:bg-gray-200 p-2 block w-full"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    className=" duration-300 hover:bg-gray-200 p-2"
+                    onClick={handlelogout}
+                  >
+                    Logout
+                  </button>
+                </PopoverContent>
+              </Popover>
             ) : (
               <>
                 <Link

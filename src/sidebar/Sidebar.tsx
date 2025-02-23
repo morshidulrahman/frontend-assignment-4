@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AlignJustify } from "lucide-react";
 import MenuItems from "@/pages/dashboard/menu/Menuitems";
 import { CircleUser } from "lucide-react";
-import { Activity } from "lucide-react";
+import { Car, KeyboardMusic, ShoppingBasket, UsersRound } from "lucide-react";
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
 
@@ -55,22 +55,22 @@ const Sidebar = () => {
 
           <div className="flex flex-col justify-between flex-1 mt-2">
             <nav>
+              <MenuItems icon={Car} label="Add-product" address="add-product" />
               <MenuItems
-                icon={Activity}
-                label="Add-product"
-                address="add-product"
-              />
-              <MenuItems
-                icon={Activity}
+                icon={KeyboardMusic}
                 label="All Products"
                 address="allProducts"
               />
               <MenuItems
-                icon={Activity}
+                icon={ShoppingBasket}
                 label="All Orders"
                 address="allorders"
               />
-              <MenuItems icon={Activity} label="All users" address="allusers" />
+              <MenuItems
+                icon={UsersRound}
+                label="All users"
+                address="allusers"
+              />
             </nav>
           </div>
         </div>

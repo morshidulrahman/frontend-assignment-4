@@ -22,13 +22,8 @@ const Login = () => {
   const user = UseUser();
 
   const [state, formAction] = useActionState(
-    async (_prevState: any, formData: FormData) => {
+    async (prevstate: any, formData: FormData) => {
       try {
-        const isRememberChecked = formData.get("remember-me");
-        if (!isRememberChecked) {
-          toast.error("Please check 'Remember me' before logging in.");
-          return;
-        }
         const userdata: LoginForm = Object.fromEntries(
           formData.entries()
         ) as LoginForm;
