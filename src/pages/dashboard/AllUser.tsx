@@ -1,20 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useDeleteUserMutation,
   useGetAlluserQuery,
   useUpdateuserMutation,
 } from "@/redux/features/users/userApi";
-import {
-  MoreVertical,
-  Trash2,
-  CheckCircle,
-  Clock,
-  Ban,
-  Unlock,
-} from "lucide-react";
-import { useState } from "react";
+import { MoreVertical, Trash2, Ban, Unlock, Loader2 } from "lucide-react";
+
 import { toast } from "sonner";
 import moment from "moment";
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+export interface TUser {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: "admin" | "user";
+  isBlocked: boolean;
+  createdAt: string;
+}
 const Alluser = () => {
   const {
     data: usersResponse,
@@ -28,12 +36,10 @@ const Alluser = () => {
 
   const users = usersResponse?.data || [];
 
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1>Loading.........</h1>
+        <Loader2 className="animate-spin w-10 h-10 text-green-600" />
       </div>
     );
 
@@ -101,8 +107,8 @@ const Alluser = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => {
-            if (!user._id) return null; // Skip if there's no _id
+          {users.map((user: TUser) => {
+            if (!user._id) return null;
             return (
               <tr
                 className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800 border-b dark:border-gray-700 border-gray-200"
@@ -126,23 +132,12 @@ const Alluser = () => {
                   {moment(user.createdAt).format("DD MMM YYYY")}
                 </td>
                 <td className="px-6 py-4 relative">
-                  {/* Dropdown Toggle Button */}
-                  <button
-                    onClick={() =>
-                      setOpenDropdown(
-                        openDropdown === user._id ? null : user._id
-                      )
-                    }
-                    className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-                  >
-                    <MoreVertical className="w-5 h-5" />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {openDropdown === user._id && (
-                    <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md rounded-lg z-10">
+                  <Popover>
+                    <PopoverTrigger>
+                      <MoreVertical className="w-5 h-5" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-fit p-0">
                       <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-                        {/* Delete User */}
                         <li>
                           <button
                             onClick={() => handleDeleteUser(user._id)}
@@ -152,7 +147,7 @@ const Alluser = () => {
                             Delete User
                           </button>
                         </li>
-                        {/* Toggle Block/Unblock User */}
+
                         <li>
                           <button
                             onClick={() =>
@@ -174,8 +169,8 @@ const Alluser = () => {
                           </button>
                         </li>
                       </ul>
-                    </div>
-                  )}
+                    </PopoverContent>
+                  </Popover>
                 </td>
               </tr>
             );

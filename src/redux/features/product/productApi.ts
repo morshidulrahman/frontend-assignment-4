@@ -1,6 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
 export interface Product {
-  _id: string;
   name: string;
   brand: string;
   model: string;
@@ -11,11 +10,18 @@ export interface Product {
   category: string;
   price: number;
   available: boolean;
+  location: string;
+  miles: number;
+  transmission: string;
+  fuel: string;
+  seats: number;
+  reviews: number;
+  data?: Product;
 }
 
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllProducts: builder.query<Product[], string>({
+    getAllProducts: builder.query({
       query: (category) => ({
         url: category ? `/allproducts?category=${category}` : `/allproducts`,
         method: "GET",
@@ -38,7 +44,7 @@ const productApi = baseApi.injectEndpoints({
         body: updatedProduct,
       }),
     }),
-    getSingleProduct: builder.query<Product, string>({
+    getSingleProduct: builder.query({
       query: (productId) => ({
         url: `/product/${productId}`,
         method: "GET",

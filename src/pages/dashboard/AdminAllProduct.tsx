@@ -1,9 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+type TProduct = {
+  _id: string;
+  name: string;
+  brand: string;
+  model: string;
+  description: string;
+  image: string;
+  rating: number;
+  quantity: number;
+  category: string;
+  price: number;
+  available: boolean;
+  location: string;
+  miles: number;
+  transmission: string;
+  fuel: string;
+  seats: number;
+  reviews: number;
+};
 import {
   useDeleteProductMutation,
   useGetAllProductsQuery,
 } from "@/redux/features/product/productApi";
-import { FilePenLine, Trash2 } from "lucide-react";
+import { FilePenLine, Loader2, Trash2 } from "lucide-react";
 
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -23,7 +43,7 @@ const AdminAllProduct = () => {
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1>Loading.........</h1>
+        <Loader2 className="animate-spin w-10 h-10 text-green-600" />
       </div>
     );
 
@@ -68,7 +88,7 @@ const AdminAllProduct = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((data, index) => (
+          {products.map((data: TProduct) => (
             <tr
               className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200"
               key={data?._id}

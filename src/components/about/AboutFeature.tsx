@@ -1,4 +1,3 @@
-import React from "react";
 import { Car, Wallet, Hand, Headphones } from "lucide-react";
 
 const features = [

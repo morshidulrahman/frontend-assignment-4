@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 
 import {
   Breadcrumb,
@@ -19,24 +20,27 @@ import ProductFaQ from "./ProductFaq";
 import Reviews from "./ProductReview";
 
 import CarDetails from "./ProductHeader";
-import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import { useGetSingleProductQuery } from "@/redux/features/product/productApi";
+import { Swiper as SwiperType } from "swiper";
+import { Loader2 } from "lucide-react";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const {
-    data: productsResponse,
+    data: productResponse,
     isLoading,
     isError,
-  } = useGetAllProductsQuery("");
-  const products = productsResponse?.data || [];
-  const product = products.find((p) => p._id === id);
+  } = useGetSingleProductQuery(id as string);
+
+  const product = productResponse?.data ?? null;
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1>Loading...</h1>
+        <Loader2 className="animate-spin w-10 h-10 text-green-600" />
       </div>
     );
   }
@@ -46,7 +50,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-5">
+    <div className="container mx-auto px-4 py-5 pt-20">
       <div className="pb-5">
         <Breadcrumb>
           <BreadcrumbList>
@@ -81,35 +85,50 @@ export default function ProductDetails() {
         }}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper2 md:h-[400px] h-auto xl:max-h-[400px] rounded-lg overflow-hidden"
+        className="mySwiper2 md:h-[400px] !h-96 xl:max-h-[400px] rounded-lg overflow-hidden "
       >
-        <SwiperSlide className=" md:h-[400px] h-auto xl:max-h-[400px]">
-          <img src={product.image} className="w-full h-full object-cover" />
+        <SwiperSlide>
+          <img src={product.image} className="!w-full !h-full object-cover" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner2.png" />
+          <img
+            src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner2.png"
+            className="!w-full !h-full  object-cover"
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner3.png" />
+          <img
+            src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner3.png"
+            className="w-full h-full object-cover"
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner4.png" />
+          <img
+            src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner4.png"
+            className="w-full h-full object-cover"
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner5.png" />
+          <img
+            src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner5.png"
+            className="w-full h-full object-cover"
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner6.png" />
+          <img
+            src="https://carento-nextjs.vercel.app/assets/imgs/cars-details/banner6.png"
+            className="w-full h-full object-cover"
+          />
         </SwiperSlide>
       </Swiper>
       <Swiper
-        onSwiper={setThumbsSwiper}
+        onSwiper={(swiper) => setThumbsSwiper(swiper)}
         spaceBetween={15}
         slidesPerView={5}
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper rounded-lg max-h-40"
+        className="mySwiper rounded-lg max-h-64  "
       >
         <SwiperSlide>
           <img
@@ -144,16 +163,7 @@ export default function ProductDetails() {
       <div className="py-10">
         <div className="p-5 border rounded-lg">
           <h3 className="text-3xl text-green-500 mb-3">Overview</h3>
-          <p className="  mb-5">
-            Elevate your Las Vegas experience to new heights with a journey
-            aboard The High Roller at The LINQ. As the tallest observation wheel
-            in the world, standing at an impressive 550 feet tall, The High
-            Roller offers a bird's-eye perspective of the iconic Las Vegas Strip
-            and its surrounding desert landscape. From the moment you step into
-            one of the spacious cabins, you'll be transported on a mesmerizing
-            adventure, where every turn offers a new and breathtaking vista of
-            the vibrant city below.
-          </p>
+          <p className="  mb-5">{product.description}</p>
           <p className=" ">
             Whether you're a first-time visitor or a seasoned Las Vegas
             aficionado, The High Roller promises an unparalleled experience that

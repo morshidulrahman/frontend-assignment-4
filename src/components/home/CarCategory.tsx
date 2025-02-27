@@ -54,7 +54,6 @@ const vehicleData = [
 const VehicleCategory = () => {
   return (
     <section className="container mx-auto py-12 px-4">
-      {/* Heading */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold">Browse by Type</h2>
@@ -68,7 +67,7 @@ const VehicleCategory = () => {
           </button>
         </div>
       </div>
-      {/* Vehicle Grid */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {vehicleData.map((vehicle, index) => (
           <Fade

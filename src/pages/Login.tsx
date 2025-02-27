@@ -6,7 +6,7 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { verifyToken } from "@/utils/VerifyToken";
-import React, { useActionState } from "react";
+import { useActionState } from "react";
 
 import { Link, Navigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -21,8 +21,8 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const user = UseUser();
 
-  const [state, formAction] = useActionState(
-    async (prevstate: any, formData: FormData) => {
+  const [, formAction] = useActionState(
+    async (_prevstate: any, formData: FormData) => {
       try {
         const userdata: LoginForm = Object.fromEntries(
           formData.entries()

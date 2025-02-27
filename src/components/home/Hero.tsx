@@ -24,11 +24,11 @@ const Hero = () => {
               <p className="text-sm text-[#70f46d] mb-4">
                 Find Your Perfect Car
               </p>
-              <h1 className="text-5xl font-extrabold text-white mb-8 leading-[55px]">
+              <h1 className="text-2xl md:text-5xl font-extrabold text-white mb-8 md:leading-[55px]">
                 Looking for a vehicle? <br />
                 You're in the perfect spot.
               </h1>
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-wrap">
                 <div className="flex items-center gap-2">
                   <button className="bg-[#70f46d] flex items-center justify-center rounded-full p-1">
                     <Check className="w-4 h-4 " />

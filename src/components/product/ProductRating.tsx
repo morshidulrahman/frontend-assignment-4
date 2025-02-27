@@ -1,4 +1,14 @@
-const ratings = [
+interface Product {
+  rating: number;
+  reviews: number;
+}
+
+interface Rating {
+  label: string;
+  value: number;
+}
+
+const ratings: Rating[] = [
   { label: "Price", value: 4.8 },
   { label: "Service", value: 4.2 },
   { label: "Safety", value: 4.9 },
@@ -7,7 +17,11 @@ const ratings = [
   { label: "Support", value: 5.0 },
 ];
 
-const RatingCard = ({ product }) => {
+interface RatingCardProps {
+  product: Product;
+}
+
+const RatingCard: React.FC<RatingCardProps> = ({ product }) => {
   return (
     <div className="border rounded-lg p-6 bg-white shadow-md max-w-lg">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">Rate Reviews</h2>

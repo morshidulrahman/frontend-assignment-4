@@ -11,13 +11,15 @@ const App = () => {
   return (
     <div>
       <Hero />
-      <CarCard />
-      <HowitWorks />
-      <VehicleCategory />
-      <div className="container mx-auto">
-        <BlogCarousel />
+      <div className="z-[999]">
+        <CarCard />
+        <HowitWorks />
+        <VehicleCategory />
+        <div className="container mx-auto">
+          <BlogCarousel />
+        </div>
+        <AutoTrader />
       </div>
-      <AutoTrader />
     </div>
   );
 };

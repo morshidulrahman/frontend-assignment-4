@@ -4,7 +4,7 @@ import AboutHeader from "./AboutHeader";
 import AboutTeamSection from "./AboutTeamSection";
 const About = () => {
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 pt-[72px]">
       <AboutHeader />
       <div className="flex md:flex-row flex-col justify-between items-center w-full py-10 gap-5">
         <h2 className="text-black text-4xl w-full md:w-[30%] font-bold">

@@ -1,4 +1,5 @@
-import React from "react";
+import { cn } from "@/lib/utils";
+import { Product } from "@/redux/features/product/productApi";
 import {
   Star,
   MapPin,
@@ -9,16 +10,40 @@ import {
   DoorOpen,
   ArrowRight,
   HelpCircle,
+  BookmarkCheck,
+  XCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const CarDetails = ({ product }) => {
+interface ReviewsProps {
+  product: Product & { _id: string };
+}
+const CarDetails: React.FC<ReviewsProps> = ({ product }) => {
   return (
     <div className="my-5 p-5 bg-white  rounded-lg shadow-md">
       <div className="flex items-center text-green-600 font-medium">
         <Star className="text-green-500 w-5 h-5" />
         <span className="ml-1 text-lg">{product.rating}</span>
         <span className="ml-1 text-gray-500">({product.reviews})</span>
+        <div
+          className={cn(
+            "ml-4 flex items-center space-x-2 px-3 py-1 rounded-full border",
+            product.quantity > 0
+              ? "'bg-green-100 text-green-700 border-green-300'"
+              : "bg-red-100 text-red-700 border-red-300"
+          )}
+        >
+          {product.quantity > 0 ? (
+            <>
+              <BookmarkCheck className="w-4 h-4" />
+              <span className="text-sm font-medium">In Stock</span>
+            </>
+          ) : (
+            <>
+              <XCircle className="w-4 h-4" />
+              <span className="text-sm font-medium">Unavailable</span>
+            </>
+          )}
+        </div>
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mt-2">
@@ -43,8 +68,8 @@ const CarDetails = ({ product }) => {
         </span>
       </div>
 
-      <div className="flex gap-2 justify-between ">
-        <div className="mt-4 p-4 bg-gray-100 rounded-lg grid grid-cols-4 gap-4 w-[70%]">
+      <div className="flex gap-2 justify-between lg:flex-row flex-col">
+        <div className="mt-4 p-4 bg-gray-100 rounded-lg grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 lg:grid-cols-4 gap-4 w-full lg:w-[70%]">
           <div className="flex items-center bg-green-100 text-gray-800 p-3 rounded-md">
             <span className="text-lg mr-2 w-5 h-5">
               <Gauge />
@@ -76,11 +101,15 @@ const CarDetails = ({ product }) => {
             4 doors
           </div>
         </div>
-        <div className="rounded-lg border w-[30%] mt-4">
+        <div className="rounded-lg border w-full lg:w-[30%] mt-4">
           <h1 className="px-5  py-2 bg-gray-50 text-lg font-semibold border-b border-b-gray-200 ">
             Rent this Car
           </h1>
+
           <div className="p-4 bg-white rounded-lg shadow-md max-w-sm mx-auto">
+            <div className="bg-green-300 px-3 py-1 rounded-full mb-1 w-fit   text-sm">
+              {product.quantity} cars Available
+            </div>
             <div className="flex justify-between items-center text-lg font-medium text-gray-900">
               <span>Total Payable</span>
               <span className="text-xl font-bold text-black">
@@ -89,7 +118,10 @@ const CarDetails = ({ product }) => {
             </div>
 
             <Link to={`/checkout/${product._id}`}>
-              <button className="w-full mt-4 bg-green-400 hover:bg-green-500 text-black font-medium py-3 rounded-lg flex items-center justify-center space-x-2 transition">
+              <button
+                className="disabled:cursor-not-allowed w-full mt-4 bg-green-400 hover:bg-green-500 text-black font-medium py-3 rounded-lg flex items-center justify-center space-x-2 transition"
+                disabled={product.quantity == 0}
+              >
                 <span>Book Now</span>
                 <ArrowRight size={20} />
               </button>

@@ -1,16 +1,16 @@
-// import React from "react";
+import UseUser from "@/hook/UseUser";
 
-// import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { AdminRouteProps } from "./AdminRoute";
 
-// const PrivateRoute = ({ children }) => {
-//   const { user, loading } = useAuth();
-//   const location = useLocation();
-//   if (loading) {
-//     return <Loader />;
-//   }
-//   if (user) return children;
+const PrivateRoute: React.FC<AdminRouteProps> = ({ children }) => {
+  const user = UseUser();
 
-//   return <Navigate to="/login" state={location.pathname} replace={true} />;
-// };
+  const location = useLocation();
 
-// export default PrivateRoute;
+  if (user) return children;
+
+  return <Navigate to="/login" state={location.pathname} replace={true} />;
+};
+
+export default PrivateRoute;

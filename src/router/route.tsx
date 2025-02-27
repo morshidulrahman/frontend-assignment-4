@@ -1,8 +1,8 @@
 import App from "@/App";
 import About from "@/components/about/About";
-import Checkoutnew from "@/components/chekout/Checkoutnew";
+
 import ProductDetails from "@/components/product/ProductDetails";
-import SingleProduct from "@/components/product/SingleProduct";
+
 import DashboardLayout from "@/layout/DashboardLayout";
 import Layout from "@/layout/Layout";
 import AllProducts from "@/pages/AllProducts";
@@ -18,6 +18,10 @@ import Login from "@/pages/Login";
 import Register from "@/pages/SignUp";
 import SuccefulPage from "@/pages/SuccefulPage";
 import { createBrowserRouter } from "react-router-dom";
+import AdminRoute from "./AdminRoute";
+import PrivateRoute from "./PrivateRoute";
+import Profile from "@/pages/dashboard/Profile";
+import ChangePassword from "@/pages/dashboard/ChangePassword";
 
 export const router = createBrowserRouter([
   {
@@ -27,9 +31,16 @@ export const router = createBrowserRouter([
       { index: true, element: <App /> },
       { path: "/allProducts", element: <AllProducts /> },
       { path: "/about", element: <About /> },
-      { path: "/checkout", element: <Checkoutnew /> },
+
       { path: "/products/:id", element: <ProductDetails /> },
-      { path: "/checkout/:id", element: <Checkoutpage /> },
+      {
+        path: "/checkout/:id",
+        element: (
+          <PrivateRoute>
+            <Checkoutpage />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {
@@ -38,27 +49,68 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: (
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "changepassword",
+        element: (
+          <PrivateRoute>
+            <ChangePassword />
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-product",
-        element: <AddProduct />,
+        element: (
+          <AdminRoute>
+            <AddProduct />
+          </AdminRoute>
+        ),
       },
       {
         path: "update-product/:productId",
-        element: <UpdateProductForm />,
+        element: (
+          <AdminRoute>
+            <UpdateProductForm />
+          </AdminRoute>
+        ),
       },
       {
         path: "allProducts",
-        element: <AdminAllProduct />,
+        element: (
+          <AdminRoute>
+            <AdminAllProduct />
+          </AdminRoute>
+        ),
       },
       {
         path: "allorders",
-        element: <Allorder />,
+        element: (
+          <AdminRoute>
+            <Allorder />
+          </AdminRoute>
+        ),
       },
       {
         path: "allusers",
-        element: <Alluser />,
+        element: (
+          <AdminRoute>
+            {" "}
+            <Alluser />
+          </AdminRoute>
+        ),
       },
     ],
   },

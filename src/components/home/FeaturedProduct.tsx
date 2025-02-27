@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Armchair,
   CarTaxiFront,
   CircleGauge,
   Fuel,
+  Loader2,
   Star,
   VenusAndMars,
 } from "lucide-react";
@@ -11,7 +13,7 @@ import { Link } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 
-const CarCard = () => {
+const CarCard: React.FC = () => {
   const {
     data: productsResponse,
     isLoading,
@@ -23,7 +25,7 @@ const CarCard = () => {
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1>Loading.........</h1>
+        <Loader2 className="animate-spin w-10 h-10 text-green-600" />
       </div>
     );
 
@@ -37,7 +39,7 @@ const CarCard = () => {
       <h1 className="text-5xl font-bold mb-2">Featured Products</h1>
       <p className="text-gray-400 mb-8">The world's leading car brands</p>
       <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.slice(0, 6).map((car, index) => (
+        {products.slice(0, 6).map((car: any, index: number) => (
           <Fade
             key={car.id}
             direction="up"

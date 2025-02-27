@@ -1,5 +1,6 @@
 import { baseApi } from "@/redux/api/baseApi";
-interface TOrderData {
+export interface TOrderData {
+  _id?: string;
   productId: string;
   productName: string;
   productImage: string;
@@ -13,13 +14,20 @@ interface TOrderData {
   paymentStatus: string;
   paymentId: string;
   createdAt: Date;
+  data?: TOrderData;
 }
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllOrder: builder.query<TOrderData[], string>({
+    getAllOrder: builder.query({
       query: () => ({
-        url: "/orders",
+        url: `/orders`,
+        method: "GET",
+      }),
+    }),
+    getSingleOrder: builder.query({
+      query: (email) => ({
+        url: `/orders/${email}`,
         method: "GET",
       }),
     }),
@@ -45,6 +53,7 @@ const orderApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useGetSingleOrderQuery,
   useDeleteOrderMutation,
   useGetAllOrderQuery,
   useUpdateorderMutation,

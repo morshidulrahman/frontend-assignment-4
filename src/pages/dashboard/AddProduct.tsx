@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // components/AddProductForm.tsx
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* tslint:disable:no-unused-variable */
 import { useAddProductMutation } from "@/redux/features/product/productApi";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -30,7 +32,9 @@ const AddProductForm = () => {
     formData.append("image", file);
 
     const response = await fetch(
-      "https://api.imgbb.com/1/upload?key=05fe858dfb3c3d87e4d12bcbc8847b36",
+      `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_API_imgbb_key
+      }`,
       {
         method: "POST",
         body: formData,
@@ -47,6 +51,7 @@ const AddProductForm = () => {
 
     try {
       let imageUrl = "";
+
       if (image) {
         imageUrl = await handleImageUpload(image);
       }
@@ -56,7 +61,7 @@ const AddProductForm = () => {
         brand,
         model,
         description,
-        image: image ? URL.createObjectURL(image) : "",
+        image: imageUrl,
         rating,
         quantity,
         category,
@@ -97,15 +102,14 @@ const AddProductForm = () => {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="">
       <form
         onSubmit={handleSubmit}
-        className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg"
+        className="w-[90%] p-6 bg-white shadow-md rounded-lg "
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Add New Product</h2>
 
-        {/* 3-column Grid Layout */}
-        <div className="grid grid-cols-3 gap-2 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Name
@@ -144,7 +148,7 @@ const AddProductForm = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Rating
@@ -186,7 +190,7 @@ const AddProductForm = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Price
@@ -228,7 +232,7 @@ const AddProductForm = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Miles
@@ -267,7 +271,7 @@ const AddProductForm = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Seats

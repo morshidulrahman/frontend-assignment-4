@@ -1,11 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useDeleteOrderMutation,
   useGetAllOrderQuery,
   useUpdateorderMutation,
 } from "@/redux/features/orders/OrderApi";
-import { MoreVertical, Trash2, CheckCircle, Clock } from "lucide-react";
-import { useState } from "react";
+import {
+  MoreVertical,
+  Trash2,
+  CheckCircle,
+  Clock,
+  Loader2,
+} from "lucide-react";
+
 import { toast } from "sonner";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Allorder = () => {
   const {
@@ -20,12 +33,10 @@ const Allorder = () => {
 
   const orders = ordersResponse?.data || [];
 
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1>Loading.........</h1>
+        <Loader2 className="animate-spin w-10 h-10 text-green-600" />
       </div>
     );
 
@@ -39,7 +50,7 @@ const Allorder = () => {
       await deletedata(id);
       refetch();
       toast.success("Order deleted successfully");
-    } catch (err) {
+    } catch (err: any) {
       toast.error("Cannot delete order");
     }
   };
@@ -53,8 +64,8 @@ const Allorder = () => {
         updatedProduct: { paymentStatus: newStatus },
       });
       refetch();
+
       toast.success(`Order marked as ${newStatus}!`);
-      setOpenDropdown(null);
     } catch (err) {
       toast.error("Failed to update order status");
     }
@@ -86,7 +97,7 @@ const Allorder = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map((data) => (
+          {orders.map((data: any) => (
             <tr
               className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200"
               key={data?._id}
@@ -112,21 +123,13 @@ const Allorder = () => {
               </td>
               <td className="px-6 py-4">{data.totalPrice}</td>
               <td className="px-6 py-4 relative">
-                {/* Dropdown Toggle Button */}
-                <button
-                  onClick={() =>
-                    setOpenDropdown(openDropdown === data._id ? null : data._id)
-                  }
-                  className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-                >
-                  <MoreVertical className="w-5 h-5" />
-                </button>
-
-                {/* Dropdown Menu */}
-                {openDropdown === data._id && (
-                  <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md rounded-lg z-10">
-                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-                      {/* Delete Order */}
+                <Popover>
+                  <PopoverTrigger>
+                    {" "}
+                    <MoreVertical className="w-5 h-5" />
+                  </PopoverTrigger>
+                  <PopoverContent className="w-fit p-0">
+                    <ul className=" text-sm text-gray-700 dark:text-gray-200">
                       <li>
                         <button
                           onClick={() => handleDeleteProduct(data._id)}
@@ -136,7 +139,7 @@ const Allorder = () => {
                           Delete Order
                         </button>
                       </li>
-                      {/* Toggle Order Status */}
+
                       <li>
                         <button
                           onClick={() =>
@@ -158,8 +161,8 @@ const Allorder = () => {
                         </button>
                       </li>
                     </ul>
-                  </div>
-                )}
+                  </PopoverContent>
+                </Popover>
               </td>
             </tr>
           ))}

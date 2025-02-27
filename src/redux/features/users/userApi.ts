@@ -1,16 +1,17 @@
 import { baseApi } from "@/redux/api/baseApi";
 
-interface TUser {
+export interface TUser {
   name: string;
   email: string;
   password: string;
   role: "admin" | "user";
   isBlocked: boolean;
+  data?: TUser;
 }
 
 const UserApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAlluser: builder.query<TUser[], string>({
+    getAlluser: builder.query({
       query: () => ({
         url: "/users",
         method: "GET",

@@ -1,12 +1,21 @@
 import { NavLink } from "react-router-dom";
-
-const MenuItems = ({ address, label, icon: Icon }) => {
+import { LucideIcon } from "lucide-react";
+interface MenuItemsProps {
+  address: string;
+  label: string;
+  icon: LucideIcon;
+}
+const MenuItems: React.FC<MenuItemsProps> = ({
+  address,
+  label,
+  icon: Icon,
+}) => {
   return (
     <NavLink
       to={address}
       end
       className={({ isActive }) =>
-        `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-green-500  text-black hover:text-white rounded-sm ${
+        `flex items-center px-4 py-2 my-3 transition-colors duration-300 transform  hover:bg-green-500  text-black hover:text-white rounded-sm ${
           isActive ? "  bg-green-500 text-white" : "text-gray-600"
         }`
       }

@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
@@ -7,26 +10,23 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import { useGetSingleProductQuery } from "@/redux/features/product/productApi";
 import axios from "axios";
-import CheckoutHeader from "@/components/chekout/CheckoutHeader";
+
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
-// Load Stripe
-const stripePromise = loadStripe(
-  "pk_test_51M1YVBL6YvgZDvxuWiJT39NxnF7fG3kDudsD3gOxgUw6WmJusFHhvT4RHti88caAiBMIvOqptpW3smjH3c1mPlZ600PtOgXZj6"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY as string);
 
-// Main Component
 const CheckoutPage = () => {
   const { id } = useParams();
   const {
-    data: productsResponse,
+    data: productresponse,
     isLoading,
     isError,
-  } = useGetAllProductsQuery("");
-  const products = productsResponse?.data || [];
-  const product = products.find((p) => p._id === id);
+  } = useGetSingleProductQuery(id);
+
+  const product = productresponse?.data || [];
 
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -46,14 +46,18 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (totalPrice > 0) {
       axios
-        .post("http://localhost:5000/api/create-payment-intent", {
+        .post(`${import.meta.env.VITE_API_URL}/create-payment-intent`, {
           amount: totalPrice * 100,
         })
         .then(({ data }) => setClientSecret(data.clientSecret));
     }
   }, [totalPrice]);
 
-  const handleQuantityChange = (value) => {
+  const handleQuantityChange = (value: number) => {
+    if (!product) {
+      toast.error("Product not found!");
+      return;
+    }
     if (value > 0 && value <= product.quantity) {
       setQuantity(value);
     }
@@ -62,11 +66,18 @@ const CheckoutPage = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!stripe || !elements) return;
     setLoading(true);
     const cardElement = elements.getElement(CardElement);
+
+    if (!cardElement) {
+      console.error("Card Element not found");
+      setLoading(false);
+      return;
+    }
+
     const { error, paymentIntent } = await stripe.confirmCardPayment(
       clientSecret,
       {
@@ -79,7 +90,12 @@ const CheckoutPage = () => {
 
     if (error) {
       console.error(error.message);
-    } else if (paymentIntent?.status === "succeeded") {
+    }
+    if (!product) {
+      toast.error("Product not found!");
+      return;
+    }
+    if (paymentIntent?.status === "succeeded") {
       const orderData = {
         productId: product._id,
         productName: product.name,
@@ -93,22 +109,27 @@ const CheckoutPage = () => {
       };
 
       try {
-        await axios.post("http://localhost:5000/api/orders", orderData);
+        await axios.post(`${import.meta.env.VITE_API_URL}/orders`, orderData);
         toast.success("orders successfully");
         setLoading(false);
         navigate("/payment/success");
-      } catch (err) {
+      } catch (err: any) {
         toast.error("Order could not be saved. Please try again.");
         setLoading(false);
       }
     }
   };
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="animate-spin w-10 h-10 text-green-600" />
+      </div>
+    );
   if (isError || !product) return <h1>Product not found</h1>;
 
   return (
-    <div className="relative mx-auto w-full bg-white">
+    <div className="relative mx-auto w-full bg-white pt-[72px]">
       <div className="grid min-h-screen grid-cols-10">
         <div className="col-span-full py-6 px-4 sm:py-12 lg:col-span-6 lg:py-24">
           <div className="mx-auto w-full max-w-lg">

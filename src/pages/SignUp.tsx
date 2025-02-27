@@ -29,7 +29,6 @@ const Register = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    // Basic validation
     if (!formData.name || !formData.email || !formData.password) {
       toast.error("All fields are required!");
       return;

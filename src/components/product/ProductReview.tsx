@@ -1,7 +1,9 @@
-import React from "react";
+import { Product } from "@/redux/features/product/productApi";
 import RatingCard from "./ProductRating";
-
-const Reviews = ({ product }) => {
+interface ReviewsProps {
+  product: Product;
+}
+const Reviews: React.FC<ReviewsProps> = ({ product }) => {
   const reviews = [
     {
       id: 1,

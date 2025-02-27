@@ -26,7 +26,7 @@ const AboutHeader = () => {
           </div>
         </div>
 
-        <div className="absolute -bottom-4 left-1/2 border bg-gray-100 rounded-lg px-3 py-1 text-xl">
+        <div className="absolute -bottom-4 left-[32%] md:left-[40%] border bg-gray-100 rounded-lg px-3 py-1 text-xl">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
