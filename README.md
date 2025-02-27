@@ -1,50 +1,35 @@
-# React + TypeScript + Vite
+# cars Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# https://assignment-4-carshop.netlify.app/
+ 
+#To Run Local
 
-Currently, two official plugins are available:
+```bash
+# Clone this project
+$ git clone  https://github.com/morshidulrahman/frontend-assignment-4.git
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Access
+$ cd frontend-assignment-4
 
-## Expanding the ESLint configuration
+# Install dependencies
+$ npm i
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+# Run the project
+$ npm run start:dev
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# The server will initialize in the <http://localhost:5173>
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+# Project Description
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- This API project is designed to eccomerce cars, enabling the following features
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- You have to use npm run this project
+
+- Add, retrieve, update, and delete blogs.
+
+- Manage user roles (Admin and User) with role-based access control.
+
+- Perform full CRUD operations for blogs and manage user authentication and authorization efficiently.
+
+- Support advanced  functionalities like search, sorting, and filtering. payment system
